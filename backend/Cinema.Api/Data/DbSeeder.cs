@@ -85,6 +85,10 @@ public static class DbSeeder
             await db.SaveChangesAsync();
         }
 
+        // Only seed screenings when the database has no screenings
+        if (await db.Seances.AnyAsync())
+            return;
+
         // 3. Create screenings for the next 14 days
         var rooms = await db.Rooms
             .OrderBy(r => r.Id)
