@@ -82,7 +82,7 @@ public sealed class AuthController : ControllerBase
             audience: "Cinema.Web",
             claims: new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString(System.Globalization.CultureInfo.InvariantCulture)),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim("role", user.Role)
             },
