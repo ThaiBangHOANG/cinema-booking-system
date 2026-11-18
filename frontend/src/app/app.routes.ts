@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'films', pathMatch: 'full' },
@@ -21,6 +22,15 @@ export const routes: Routes = [
   {
     path: 'reservations/:id/billet',
     loadComponent: () => import('./pages/ticket/ticket').then(m => m.TicketPage)
+  },
+  {
+    path: 'admin',
+    canActivate: [adminGuard],
+    loadComponent: () => import('./pages/admin-home/admin-home').then(m => m.AdminHomePage)
+  },
+  {
+    path: 'acces-refuse',
+    loadComponent: () => import('./pages/access-denied/access-denied').then(m => m.AccessDeniedPage)
   },
   { path: 'connexion', loadComponent: () => import('./pages/auth/auth').then(m => m.AuthPage) },
   { path: '**', redirectTo: 'films' }
