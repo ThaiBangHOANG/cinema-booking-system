@@ -14,4 +14,8 @@ export class SeancesService {
 
     return this.http.get<Seance[]>('/api/seances', { params });
   }
+
+  getSeance(id: number): Observable<Seance> {
+    return this.http.get<Seance>(`/api/seances/${id}`);
+  }
 }

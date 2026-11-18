@@ -1,0 +1,80 @@
+<section class="seats-page">
+  <div class="top-links">
+    <a routerLink="/seances">&larr; Retour aux séances</a>
+    <a routerLink="/films">Films à l'affiche</a>
+  </div>
+
+  <header class="page-header">
+    <span class="eyebrow">LE GRAND CINÉMA · PLAN DE SALLE</span>
+    <h1>Choisissez vos places</h1>
+    @if (seance(); as screening) {
+      <p><strong>{{ screening.filmTitle }}</strong> · {{ screening.roomName }} ·
+        {{ screening.startsAtUtc | date:'dd/MM/yyyy à HH:mm' }}</p>
+    } @else {
+      <p>Choisissez une séance et sélectionnez les sièges qui vous conviennent.</p>
+    }
+  </header>
+
+  @if (loading() && !availability()) {
+    <p class="state-message" role="status">Chargement du plan de salle...</p>
+  } @else if (error() && !availability()) {
+    <p class="state-message error" role="alert">{{ error() }}</p>
+  } @else if (availability(); as data) {
+    <div class="toolbar">
+      <div><strong>{{ data.availableSeats }} places libres</strong> sur {{ data.totalSeats }} — {{ data.roomName }}</div>
+      <button type="button" class="refresh-button" (click)="refresh()">Actualiser les places</button>
+    </div>
+    <p class="refresh-note">Disponibilités actualisées automatiquement toutes les 15 secondes.</p>
+
+    @if (error()) {
+      <p class="state-message error" role="alert">{{ error() }}</p>
+    }
+    @if (notice()) {
+      <p class="state-message warning" role="status">{{ notice() }}</p>
+    }
+
+    <div class="seat-layout">
+      <div class="screen" aria-hidden="true">ÉCRAN</div>
+      <div class="seat-rows">
+        @for (row of rows(); track row.label) {
+          <div class="seat-row">
+            <span class="row-label">{{ row.label }}</span>
+            <div class="row-seats">
+              @for (seat of row.seats; track seat.seatId) {
+                <button type="button" class="seat"
+                  [class.reserved]="!seat.isAvailable"
+                  [class.selected]="isSelected(seat.seatId)"
+                  [disabled]="!seat.isAvailable"
+                  [attr.aria-label]="'Place ' + seat.seatNumber + (seat.isAvailable ? (isSelected(seat.seatId) ? ', sélectionnée' : ', disponible') : ', réservée')"
+                  [attr.aria-pressed]="isSelected(seat.seatId)"
+                  (click)="toggleSeat(seat)">
+                  {{ seat.seatNumber }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="legend" aria-label="Légende des places">
+      <span><i class="swatch free"></i> Disponible</span>
+      <span><i class="swatch chosen"></i> Sélectionnée</span>
+      <span><i class="swatch occupied"></i> Déjà réservée</span>
+    </div>
+
+    <aside class="selection-summary" aria-live="polite">
+      <div>
+        <span class="eyebrow">VOTRE SÉLECTION</span>
+        <h2>{{ selectedIds().length }} place(s) sélectionnée(s)</h2>
+        @if (selectedSeatNumbers().length > 0) {
+          <p>Places : <strong>{{ selectedSeatNumbers().join(', ') }}</strong></p>
+        } @else {
+          <p>Sélectionnez une ou plusieurs places disponibles (6 maximum).</p>
+        }
+      </div>
+      <p class="next-step">Prochaine étape : connexion et confirmation de réservation.</p>
+    </aside>
+    <p class="disclaimer">La sélection ne bloque pas encore les places. La disponibilité sera vérifiée lors de la réservation.</p>
+  }
+</section>
