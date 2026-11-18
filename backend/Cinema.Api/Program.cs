@@ -57,24 +57,25 @@ var app = builder.Build();
 await DbSeeder.SeedAsync(app.Services);
 
 // Swagger
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
+app.MapOpenApi();
 
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint(
-            "/openapi/v1.json",
-            "Le Grand Cinema API v1"
-        );
-    });
-}
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint(
+        "/openapi/v1.json",
+        "Le Grand Cinema API v1"
+    );
+});
 
 app.UseHttpsRedirection();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 app.Run();
