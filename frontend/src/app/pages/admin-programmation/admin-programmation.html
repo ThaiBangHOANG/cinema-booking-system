@@ -1,0 +1,106 @@
+<section class="prog-page">
+  <header class="prog-head">
+    <a routerLink="/admin" class="back-link">&larr; Tableau de bord administrateur</a>
+    <span class="eyebrow">ADMINISTRATION / PROGRAMMATION</span>
+    <h1>Gestion des s&eacute;ances</h1>
+    <p>Programmez les projections, modifiez les horaires et v&eacute;rifiez les conflits de salle.</p>
+  </header>
+
+  @if (notice()) {
+    <p role="status" class="notice">{{ notice() }}</p>
+  }
+  @if (error()) {
+    <p role="alert" class="error">{{ error() }}</p>
+  }
+
+  <div class="prog-layout">
+    <section class="editor" aria-label="Formulaire de programmation">
+      <div class="card-title">
+        <h2>{{ editingId() === null ? 'Nouvelle séance' : 'Modifier la séance #' + editingId() }}</h2>
+        @if (editingId() !== null) {
+          <button type="button" class="small-button" (click)="newSeance()">Annuler</button>
+        }
+      </div>
+
+      <form (ngSubmit)="save()" #scheduleForm="ngForm" novalidate>
+        <label for="film">Film</label>
+        <select id="film" name="filmId" [(ngModel)]="form.filmId" required>
+          <option [ngValue]="null">Choisir un film</option>
+          @for (film of films(); track film.id) {
+            <option [ngValue]="film.id">{{ film.title }}</option>
+          }
+        </select>
+
+        <label for="room">Salle</label>
+        <select id="room" name="roomId" [(ngModel)]="form.roomId" required>
+          <option [ngValue]="null">Choisir une salle</option>
+          @for (room of rooms(); track room.id) {
+            <option [ngValue]="room.id">{{ room.name }}</option>
+          }
+        </select>
+        @if (!loading() && rooms().length === 0) {
+          <p class="help">Aucune salle disponible dans la programmation actuelle.</p>
+        }
+
+        <label for="start">Date et heure (locale)</label>
+        <input id="start" name="startsAtLocal" type="datetime-local"
+          [(ngModel)]="form.startsAtLocal" required />
+        <p class="help">L'heure sera convertie en UTC avant l'envoi &agrave; l'API.</p>
+        <button type="submit" class="primary"
+          [disabled]="saving() || loading() || rooms().length === 0 || !scheduleForm.valid">
+          {{ saving() ? 'Enregistrement...' : (editingId() === null ? 'Créer la séance' : 'Enregistrer la modification') }}
+        </button>
+      </form>
+    </section>
+
+    <section class="listing" aria-label="Liste des s&eacute;ances">
+      <div class="listing-head">
+        <div>
+          <h2>Programmation</h2>
+          <p>{{ filtered().length }} s&eacute;ance(s) affichable(s)</p>
+        </div>
+        <button type="button" class="outline" (click)="load()" [disabled]="loading()">
+          Actualiser
+        </button>
+      </div>
+
+      <div class="filters">
+        <label for="search">Rechercher un film, une salle ou un ID</label>
+        <input id="search" type="search" [ngModel]="search()" (ngModelChange)="setSearch($event)"
+          [ngModelOptions]="{standalone: true}" placeholder="Ex. Salle 1" />
+        <label class="check">
+          <input type="checkbox" [ngModel]="upcomingOnly()" (ngModelChange)="setUpcomingOnly($event)"
+            [ngModelOptions]="{standalone: true}" />
+          S&eacute;ances &agrave; venir uniquement
+        </label>
+      </div>
+
+      @if (loading()) {
+        <p class="empty" role="status">Chargement de la programmation...</p>
+      } @else if (filtered().length === 0) {
+        <p class="empty">Aucune s&eacute;ance ne correspond &agrave; ces crit&egrave;res.</p>
+      } @else {
+        <div class="seance-list">
+          @for (s of visible(); track s.id) {
+            <article class="seance-item">
+              <div class="item-main">
+                <span class="item-id">S&eacute;ance #{{ s.id }}</span>
+                <h3>{{ s.filmTitle }}</h3>
+                <p>{{ s.roomName }} &middot; {{ s.startsAtUtc | date:'dd/MM/yyyy HH:mm' }}</p>
+              </div>
+              <div class="item-actions">
+                <button type="button" class="outline" (click)="edit(s)" [disabled]="saving() || deletingId() !== null">Modifier</button>
+                <button type="button" class="danger" (click)="remove(s)" [disabled]="saving() || deletingId() !== null">
+                  {{ deletingId() === s.id ? 'Suppression...' : 'Supprimer' }}
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+        @if (visible().length < filtered().length) {
+          <button type="button" class="more" (click)="showMore()">Afficher 25 s&eacute;ances de plus</button>
+        }
+      }
+    </section>
+  </div>
+</section>
