@@ -39,7 +39,9 @@
           <div class="seance-content">
             <h2>{{ seance.filmTitle }}</h2>
             <p>{{ seance.roomName }}</p>
-            <span class="seance-status">Séance à venir</span>
+            <a class="choose-seats" [routerLink]="['/seances', seance.id, 'places']">
+              Choisir mes places &rarr;
+            </a>
           </div>
         </article>
       }
