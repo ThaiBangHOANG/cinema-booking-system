@@ -8,3 +8,5 @@
 .site-main { width: 100%; flex: 1; padding: 34px 24px 0; }
 .site-footer { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 26px max(24px, calc((100vw - 1140px)/2)); color: #7a8593; background: #fff; border-top: 1px solid #e9edf2; font-size: 11px; letter-spacing: .7px; }
 @media (max-width: 600px) { .header-inner { padding: 12px 20px; min-height: 70px; } .brand { font-size: 11px; } .site-main { padding: 20px 16px 0; } .site-footer { flex-direction: column; align-items: flex-start; padding: 20px; } }
+
+.site-header nav { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }

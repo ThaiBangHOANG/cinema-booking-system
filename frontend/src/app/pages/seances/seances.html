@@ -1,0 +1,56 @@
+<section class="seances-page">
+  <div class="top-links">
+    <a routerLink="/films">&larr; Films à l'affiche</a>
+    @if (selectedFilmId() !== null) {
+      <a routerLink="/seances">Toutes les séances</a>
+    }
+  </div>
+
+  <header class="seances-header">
+    <span class="eyebrow">LE GRAND CINÉMA · PROGRAMMATION</span>
+    @if (selectedFilmId() !== null && seances().length > 0) {
+      <h1>Séances : {{ seances()[0].filmTitle }}</h1>
+    } @else {
+      <h1>Les séances à venir</h1>
+    }
+    <p>Retrouvez les horaires et les salles de projection. Les horaires s'affichent dans votre fuseau horaire.</p>
+  </header>
+
+  @if (loading()) {
+    <p class="state-message" role="status">Chargement des séances...</p>
+  } @else if (error()) {
+    <p class="state-message error" role="alert">{{ error() }}</p>
+  } @else if (seances().length === 0) {
+    <p class="state-message">Aucune séance future pour cette sélection.</p>
+  } @else {
+    <div class="results-line">
+      <span>{{ seances().length }} séances trouvées</span>
+      <span>Les prochaines projections d'abord</span>
+    </div>
+    <div class="seance-grid">
+      @for (seance of visibleSeances(); track seance.id) {
+        <article class="seance-card">
+          <div class="seance-date">
+            <time [attr.datetime]="seance.startsAtUtc">
+              {{ seance.startsAtUtc | date:'dd/MM/yyyy' }}
+            </time>
+            <strong>{{ seance.startsAtUtc | date:'HH:mm' }}</strong>
+          </div>
+          <div class="seance-content">
+            <h2>{{ seance.filmTitle }}</h2>
+            <p>{{ seance.roomName }}</p>
+            <span class="seance-status">Séance à venir</span>
+          </div>
+        </article>
+      }
+    </div>
+
+    @if (visibleSeances().length < seances().length) {
+      <div class="more-wrapper">
+        <button type="button" class="more-button" (click)="showMore()">
+          Voir plus de séances
+        </button>
+      </div>
+    }
+  }
+</section>
