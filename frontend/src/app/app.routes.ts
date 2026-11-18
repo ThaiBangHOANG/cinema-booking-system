@@ -29,6 +29,16 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/admin-programmation/admin-programmation').then(m => m.AdminProgrammationPage)
   },
   {
+    path: 'admin/reservations',
+    canActivate: [adminGuard],
+    loadComponent: () => import('./pages/admin-reservations/admin-reservations').then(m => m.AdminReservationsPage)
+  },
+  {
+    path: 'admin/statistiques',
+    canActivate: [adminGuard],
+    loadComponent: () => import('./pages/admin-statistics/admin-statistics').then(m => m.AdminStatisticsPage)
+  },
+  {
     path: 'admin',
     canActivate: [adminGuard],
     loadComponent: () => import('./pages/admin-home/admin-home').then(m => m.AdminHomePage)

@@ -1,0 +1,63 @@
+<section class="report-page">
+  <p class="breadcrumb"><a routerLink="/admin">Administration</a> / Suivi des réservations</p>
+  <header class="report-header">
+    <div>
+      <span class="eyebrow">US09 · ADMINISTRATION</span>
+      <h1>Suivi des réservations</h1>
+      <p>Consultez les billets émis et filtrez par séance.</p>
+    </div>
+    <a class="secondary-link" routerLink="/admin/statistiques">Voir les statistiques</a>
+  </header>
+
+  <form class="filters" (ngSubmit)="load()">
+    <label for="seance-filter">N° de séance (facultatif)
+      <input id="seance-filter" type="text" inputmode="numeric" name="seanceId" [(ngModel)]="seanceIdText" placeholder="Toutes les séances" />
+    </label>
+    <label for="limit-filter">Résultats affichés
+      <select id="limit-filter" name="limit" [(ngModel)]="limit">
+        <option [ngValue]="20">20</option>
+        <option [ngValue]="50">50</option>
+        <option [ngValue]="100">100</option>
+        <option [ngValue]="200">200</option>
+      </select>
+    </label>
+    <button type="submit" [disabled]="loading()">{{ loading() ? 'Chargement...' : 'Rechercher' }}</button>
+  </form>
+
+  @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+  @if (loading()) {
+    <p class="empty" role="status">Chargement des réservations...</p>
+  } @else {
+    <p class="result-count"><strong>{{ total() }}</strong> réservation(s) trouvée(s) · {{ items().length }} affichée(s)</p>
+    @if (items().length === 0) {
+      <p class="empty">Aucune réservation trouvée pour ce filtre.</p>
+    } @else {
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Réservation</th><th scope="col">Spectateur</th><th scope="col">Film / salle</th>
+              <th scope="col">Séance</th><th scope="col">Places</th><th scope="col">Date de réservation</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (r of items(); track r.id) {
+              <tr>
+                <td><strong>#{{ r.id }}</strong><small>Code {{ r.ticketCode }}</small></td>
+                <td>{{ r.userEmail }}</td>
+                <td><strong>{{ r.filmTitle }}</strong><small>{{ r.roomName }}</small></td>
+                <td>{{ r.startsAtUtc | date:'dd/MM/yyyy HH:mm' }}<small>n° {{ r.seanceId }}</small></td>
+                <td>{{ r.seatNumbers.join(', ') }}</td>
+                <td>{{ r.reservedAtUtc | date:'dd/MM/yyyy HH:mm' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      @if (total() > items().length) {
+        <p class="footnote">Seules les premières {{ items().length }} réservations sont affichées. Filtrez par séance pour affiner.</p>
+      }
+    }
+  }
+  <p class="footnote">Les coordonnées des clients ne sont accessibles qu'aux administrateurs authentifiés.</p>
+</section>
