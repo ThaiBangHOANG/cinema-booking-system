@@ -43,6 +43,3 @@ Le Backend existe déjà : ce lot n'ajoute ni migration ni modification de Postg
 - Le JWT est transmis par `Authorization: Bearer ...` dans les requêtes d'administration.
 - Les identités et autorisations doivent toujours être validées par l'API ; les guards Angular ne suffisent pas.
 - Aucun secret, mot de passe ou token n'est logué ou documenté.
-
-## Preuves STUDI
-Captures écran recommandées : liste de réservations (masquer les emails si nécessaire), tableaux de statistiques, données d'affluence, résultat des tests d'accès et PR GitHub.
