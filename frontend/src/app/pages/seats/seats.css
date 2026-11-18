@@ -37,3 +37,13 @@ h1 { font-size: clamp(28px, 4vw, 40px); margin: 12px 0; }
 .state-message.error { color: #ad2525; }
 .state-message.warning { color: #95631c; }
 @media (max-width: 680px) { .page-header { padding: 30px 24px; } .seat-layout { padding: 25px 14px; } .seat { min-width: 34px; height: 36px; font-size: 9px; } .row-seats { gap: 5px; } }
+
+.booking-actions { min-width: 225px; }
+.booking-button { width: 100%; padding: 15px 18px; border: 0; border-radius: 10px; font-weight: 800; background: #18212f; color: #fff; cursor: pointer; }
+.booking-button:hover:not(:disabled) { background: #273b53; }
+.booking-button:disabled { background: #a6aeb9; cursor: not-allowed; }
+.booking-actions p { color: #677487; font-size: 11px; margin-top: 9px; }
+.confirmation { margin-top: 22px; padding: 25px 30px; background: #eff8f1; border: 1px solid #93c6a5; border-radius: 15px; color: #24563a; }
+.confirmation h2 { margin: 12px 0; font-size: 23px; }
+.confirmation p { font-size: 14px; }
+.confirmation code { font-size: 13px; overflow-wrap: anywhere; }
