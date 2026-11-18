@@ -92,7 +92,9 @@
         <h2>Vos places sont réservées !</h2>
         <p>Réservation n° <strong>{{ confirmation.reservationId }}</strong></p>
         <p>Code du billet : <code>{{ confirmation.ticketCode }}</code></p>
-        <p>La consultation du billet numérique sera disponible depuis la page de confirmation à l'étape suivante.</p>
+        <a class="ticket-link" [routerLink]="['/reservations', confirmation.reservationId, 'billet']">
+          Voir et imprimer mon billet &rarr;
+        </a>
       </section>
     }
     <p class="disclaimer">La sélection ne bloque pas les places avant confirmation. La disponibilité est revalidée lors de la réservation.</p>

@@ -71,6 +71,6 @@ export class AuthPage {
 
   private getSafeReturnUrl(): string {
     const raw = this.route.snapshot.queryParamMap.get('returnUrl');
-    return raw && /^\/seances\/\d+\/places$/.test(raw) ? raw : '/films';
+    return raw && /^\/(?:seances\/\d+\/places|reservations\/\d+\/billet)$/.test(raw) ? raw : '/films';
   }
 }
