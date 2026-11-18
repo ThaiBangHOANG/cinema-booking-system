@@ -1,0 +1,39 @@
+<section class="auth-shell">
+  <div class="auth-intro">
+    <span class="eyebrow">LE GRAND CINÉMA · VOTRE COMPTE</span>
+    <h1>Vivez le cinéma en toute simplicité.</h1>
+    <p>Connectez-vous ou créez un compte pour réserver vos places, puis retrouver votre billet.</p>
+    <a routerLink="/films">&larr; Retour aux films</a>
+  </div>
+
+  <div class="auth-card">
+    <div class="auth-tabs" role="group" aria-label="Choix du formulaire">
+      <button type="button" [class.active]="mode() === 'login'" (click)="setMode('login')">Connexion</button>
+      <button type="button" [class.active]="mode() === 'register'" (click)="setMode('register')">Inscription</button>
+    </div>
+
+    <h2>{{ mode() === 'login' ? 'Bienvenue à nouveau' : 'Créer mon compte' }}</h2>
+    <p class="intro-text">{{ mode() === 'login' ? 'Connectez-vous pour confirmer votre réservation.' : 'Quelques secondes suffisent pour commencer.' }}</p>
+
+    <form #authForm="ngForm" (ngSubmit)="submit(authForm)">
+      <label for="email">Adresse e-mail</label>
+      <input id="email" name="email" type="email" required email
+        autocomplete="email" placeholder="vous@exemple.fr"
+        [(ngModel)]="email" [disabled]="submitting()" />
+
+      <label for="password">Mot de passe</label>
+      <input id="password" name="password" type="password" required minlength="8"
+        [autocomplete]="mode() === 'login' ? 'current-password' : 'new-password'"
+        placeholder="8 caractères minimum"
+        [(ngModel)]="password" [disabled]="submitting()" />
+
+      @if (error()) {
+        <p class="form-error" role="alert">{{ error() }}</p>
+      }
+      <button class="submit-button" type="submit" [disabled]="authForm.invalid || submitting()">
+        {{ submitting() ? 'Veuillez patienter...' : (mode() === 'login' ? 'Me connecter' : 'Créer mon compte') }}
+      </button>
+    </form>
+    <p class="auth-tip">Vos informations sont utilisées uniquement pour gérer vos réservations dans ce projet de démonstration.</p>
+  </div>
+</section>

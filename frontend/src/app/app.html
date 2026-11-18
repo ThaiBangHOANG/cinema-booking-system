@@ -1,8 +1,17 @@
 <div class="site-shell">
   <header class="site-header">
     <div class="header-inner">
-      <a href="/films" class="brand"><span class="brand-mark">GC</span><span>LE GRAND CIN&Eacute;MA</span></a>
-      <nav aria-label="Navigation principale"><a href="/films">Films &agrave; l'affiche</a><a href="/seances">S&eacute;ances</a></nav>
+      <a routerLink="/films" class="brand"><span class="brand-mark">GC</span><span>LE GRAND CIN&Eacute;MA</span></a>
+      <nav aria-label="Navigation principale">
+        <a routerLink="/films">Films &agrave; l'affiche</a>
+        <a routerLink="/seances">S&eacute;ances</a>
+        @if (auth.user(); as session) {
+          <span class="nav-user">{{ session.email }}</span>
+          <button type="button" class="nav-logout" (click)="logout()">D&eacute;connexion</button>
+        } @else {
+          <a class="nav-login" routerLink="/connexion">Connexion / Inscription</a>
+        }
+      </nav>
     </div>
   </header>
 

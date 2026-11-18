@@ -10,3 +10,10 @@
 @media (max-width: 600px) { .header-inner { padding: 12px 20px; min-height: 70px; } .brand { font-size: 11px; } .site-main { padding: 20px 16px 0; } .site-footer { flex-direction: column; align-items: flex-start; padding: 20px; } }
 
 .site-header nav { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+
+.nav-user { color: #6b7583; font-size: 11px; max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.site-header nav .nav-login { padding: 10px 13px; border-radius: 8px; color: white; background: #18212f; }
+.site-header nav .nav-login:hover { color: white; background: #31445b; }
+.nav-logout { background: none; border: 1px solid #d4dce6; border-radius: 8px; padding: 9px 12px; font-size: 12px; cursor: pointer; color: #39465a; font-weight: 750; }
+.nav-logout:hover { background: #f1f4f7; }
+@media (max-width: 740px) { .header-inner { align-items: flex-start; flex-direction: column; padding: 14px 20px; gap: 12px; } .site-header nav { gap: 12px; } }
