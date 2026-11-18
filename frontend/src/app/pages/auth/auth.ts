@@ -52,8 +52,12 @@ export class AuthPage {
       finalize(() => this.submitting.set(false)),
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
-      next: () => {
-        void this.router.navigateByUrl(this.returnUrl);
+      next: session => {
+        // Admins land on the admin dashboard unless returning to a requested page.
+        const destination = this.returnUrl === '/films' && session.role === 'Admin'
+          ? '/admin'
+          : this.returnUrl;
+        void this.router.navigateByUrl(destination);
       },
       error: (error: HttpErrorResponse) => {
         if (error.status === 409) {
@@ -71,6 +75,8 @@ export class AuthPage {
 
   private getSafeReturnUrl(): string {
     const raw = this.route.snapshot.queryParamMap.get('returnUrl');
-    return raw && /^\/(?:seances\/\d+\/places|reservations\/\d+\/billet)$/.test(raw) ? raw : '/films';
+    return raw && /^\/(?:admin|seances\/\d+\/places|reservations\/\d+\/billet)$/.test(raw)
+      ? raw
+      : '/films';
   }
 }

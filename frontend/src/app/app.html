@@ -6,6 +6,9 @@
         <a routerLink="/films">Films &agrave; l'affiche</a>
         <a routerLink="/seances">S&eacute;ances</a>
         @if (auth.user(); as session) {
+          @if (session.role === 'Admin') {
+            <a routerLink="/admin">Administration</a>
+          }
           <span class="nav-user">{{ session.email }}</span>
           <button type="button" class="nav-logout" (click)="logout()">D&eacute;connexion</button>
         } @else {
