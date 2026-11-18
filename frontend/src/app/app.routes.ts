@@ -24,6 +24,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/ticket/ticket').then(m => m.TicketPage)
   },
   {
+    path: 'admin/programmation',
+    canActivate: [adminGuard],
+    loadComponent: () => import('./pages/admin-programmation/admin-programmation').then(m => m.AdminProgrammationPage)
+  },
+  {
     path: 'admin',
     canActivate: [adminGuard],
     loadComponent: () => import('./pages/admin-home/admin-home').then(m => m.AdminHomePage)
