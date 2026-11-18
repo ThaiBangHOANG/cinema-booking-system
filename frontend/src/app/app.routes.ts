@@ -18,6 +18,10 @@ export const routes: Routes = [
     path: 'seances/:id/places',
     loadComponent: () => import('./pages/seats/seats').then(m => m.SeatsPage)
   },
+  {
+    path: 'reservations/:id/billet',
+    loadComponent: () => import('./pages/ticket/ticket').then(m => m.TicketPage)
+  },
   { path: 'connexion', loadComponent: () => import('./pages/auth/auth').then(m => m.AuthPage) },
   { path: '**', redirectTo: 'films' }
 ];
