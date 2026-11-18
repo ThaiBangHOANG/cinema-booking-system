@@ -1,0 +1,64 @@
+<section class="ticket-page">
+  <a class="back-link" routerLink="/films">&larr; Retour aux films</a>
+
+  @if (loading()) {
+    <p class="status" role="status">Chargement de votre billet numérique...</p>
+  } @else if (error()) {
+    <div class="error-panel" role="alert">
+      <h1>Billet indisponible</h1>
+      <p>{{ error() }}</p>
+      <a routerLink="/films">Revenir aux films</a>
+    </div>
+  } @else if (ticket(); as billet) {
+    <header class="page-heading">
+      <span class="eyebrow">LE GRAND CINÉMA · BILLET NUMÉRIQUE</span>
+      <h1>Votre billet est confirmé</h1>
+      <p>Présentez ce billet et son code à l'entrée de la séance.</p>
+    </header>
+
+    <article class="ticket-card" aria-label="Billet de cinéma">
+      <div class="ticket-top">
+        <span>LE GRAND CINÉMA</span>
+        <span class="confirmed">RÉSERVATION CONFIRMÉE</span>
+      </div>
+
+      <div class="ticket-main">
+        <p class="small-label">FILM</p>
+        <h2>{{ billet.filmTitle }}</h2>
+        <div class="ticket-info">
+          <div>
+            <span class="small-label">SÉANCE</span>
+            <strong>{{ billet.startsAtUtc | date:'dd/MM/yyyy à HH:mm' }}</strong>
+          </div>
+          <div>
+            <span class="small-label">SALLE</span>
+            <strong>{{ billet.roomName }}</strong>
+          </div>
+          <div>
+            <span class="small-label">PLACES</span>
+            <strong>{{ billet.seatNumbers.join(', ') }}</strong>
+          </div>
+          <div>
+            <span class="small-label">RÉSERVATION</span>
+            <strong>N° {{ billet.reservationId }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket-code">
+        <span class="small-label">CODE DU BILLET</span>
+        <code>{{ billet.ticketCode }}</code>
+      </div>
+      <div class="ticket-bottom">
+        <span>Réservé le {{ billet.reservedAtUtc | date:'dd/MM/yyyy à HH:mm' }}</span>
+        <span>Billet dématérialisé · Projet CIN&Eacute;MA</span>
+      </div>
+    </article>
+
+    <div class="ticket-actions">
+      <button type="button" (click)="printTicket()">Imprimer / Enregistrer en PDF</button>
+      <a routerLink="/seances">Voir les autres séances</a>
+    </div>
+    <p class="ticket-note">Conservez l'adresse de cette page pour retrouver votre billet après connexion. Le code n'est pas un reçu de paiement.</p>
+  }
+</section>

@@ -1,0 +1,21 @@
+.auth-shell { max-width: 1040px; margin: 18px auto 100px; display: grid; grid-template-columns: 1fr 1fr; gap: 55px; align-items: center; min-height: 60vh; }
+.auth-intro { padding: 20px 0; }
+.eyebrow { color: #b27b3e; font-size: 11px; letter-spacing: 2px; font-weight: 800; }
+.auth-intro h1 { color: #18212f; font-size: clamp(32px, 4.5vw, 46px); line-height: 1.14; margin: 22px 0; max-width: 450px; }
+.auth-intro p { color: #5d6a7c; line-height: 1.65; max-width: 410px; }
+.auth-intro a { display: inline-block; margin-top: 24px; font-size: 13px; color: #94652d; font-weight: 800; text-decoration: none; }
+.auth-card { border: 1px solid #e5e9ee; background: white; padding: 32px; border-radius: 22px; box-shadow: 0 12px 45px #16213210; }
+.auth-tabs { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #e3e8ee; border-radius: 12px; padding: 4px; background: #f6f8fa; margin-bottom: 25px; }
+.auth-tabs button { background: none; border: 0; border-radius: 9px; padding: 12px; cursor: pointer; font-weight: 800; color: #596778; }
+.auth-tabs button.active { background: #18212f; color: white; }
+.auth-card h2 { margin: 0; font-size: 25px; color: #18212f; }
+.intro-text { color: #677487; font-size: 13px; margin: 10px 0 24px; }
+form { display: grid; gap: 10px; }
+label { font-size: 12px; color: #2e3d50; font-weight: 800; margin-top: 9px; }
+input { border: 1px solid #dbe1e8; border-radius: 10px; padding: 13px; font-size: 14px; min-width: 0; background: white; color: #172334; }
+input:focus { outline: 2px solid #bd8851; outline-offset: 1px; }
+.submit-button { margin-top: 20px; background: #18212f; color: #fff; border: 0; border-radius: 10px; padding: 15px; font-weight: 800; cursor: pointer; }
+.submit-button:disabled { opacity: .55; cursor: not-allowed; }
+.form-error { background: #fff2f1; border: 1px solid #efbdbc; border-radius: 9px; color: #a3262a; padding: 10px 12px; font-size: 12px; }
+.auth-tip { font-size: 11px; line-height: 1.6; color: #7a8593; padding-top: 12px; }
+@media (max-width: 740px) { .auth-shell { grid-template-columns: 1fr; gap: 12px; margin: 0 auto 65px; } .auth-card { padding: 24px; } }

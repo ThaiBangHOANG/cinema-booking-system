@@ -1,0 +1,61 @@
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">LE GRAND CIN&Eacute;MA &middot; PROGRAMMATION</span>
+    <h1>Le cin&eacute;ma, &agrave; votre rythme.</h1>
+    <p>Explorez les films &agrave; l'affiche. Choisissez votre prochaine exp&eacute;rience sur grand &eacute;cran.</p>
+    <div class="hero-meta">
+      <span class="meta-dot"></span> R&eacute;servation en ligne
+      <span class="meta-separator">&middot;</span>
+      <span>10 salles</span>
+    </div>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <div class="hero-ring ring-outer"></div>
+    <div class="hero-ring ring-inner"></div>
+    <div class="hero-center">GC</div>
+  </div>
+</section>
+
+<section class="catalogue" aria-labelledby="films-heading">
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">&Agrave; D&Eacute;COUVRIR</span>
+      <h2 id="films-heading">Les films &agrave; l'affiche</h2>
+    </div>
+    @if (!loading() && !error()) {
+      <span class="film-count">{{ films().length }} films disponibles</span>
+    }
+  </div>
+
+  @if (loading()) {
+    <p class="state-message" role="status">Chargement des films...</p>
+  } @else if (error()) {
+    <p class="state-message error" role="alert">{{ error() }}</p>
+  } @else {
+    <div class="film-grid">
+      @for (film of films(); track film.id) {
+        <a class="film-card" [routerLink]="['/films', film.id]">
+          <div class="poster">
+            @if (film.posterUrl) {
+              <img [src]="film.posterUrl" [alt]="'Affiche de ' + film.title" loading="lazy" />
+            } @else {
+              <div class="poster-fallback" aria-hidden="true">
+                <span class="poster-letter">{{ film.title.charAt(0) }}</span>
+                <span class="poster-wordmark">LE GRAND CIN&Eacute;MA</span>
+              </div>
+            }
+            <span class="poster-tag">&Agrave; l'affiche</span>
+          </div>
+          <div class="film-info">
+            <p class="film-duration">{{ film.durationMinutes }} min</p>
+            <h3>{{ film.title }}</h3>
+            <p class="film-description">{{ film.description }}</p>
+            <span class="film-link">Voir le film <span aria-hidden="true">&rarr;</span></span>
+          </div>
+        </a>
+      } @empty {
+        <p class="state-message">Aucun film disponible pour le moment.</p>
+      }
+    </div>
+  }
+</section>

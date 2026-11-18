@@ -1,0 +1,19 @@
+.site-shell { min-height: 100vh; display: flex; flex-direction: column; }
+.site-header { background: #fff; border-bottom: 1px solid #eceef1; }
+.header-inner { max-width: 1140px; margin: 0 auto; min-height: 78px; display: flex; justify-content: space-between; align-items: center; padding: 0 8px; gap: 24px; }
+.brand { color: #18212f; display: inline-flex; align-items: center; gap: 12px; text-decoration: none; font-size: 13px; font-weight: 850; letter-spacing: 1.4px; }
+.brand-mark { width: 40px; height: 40px; display: grid; place-items: center; background: #18212f; color: #d9a864; border-radius: 10px; font: bold 17px Georgia, serif; letter-spacing: 0; }
+.site-header nav a { color: #39465a; font-size: 13px; font-weight: 700; text-decoration: none; }
+.site-header nav a:hover { color: #97652f; }
+.site-main { width: 100%; flex: 1; padding: 34px 24px 0; }
+.site-footer { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 26px max(24px, calc((100vw - 1140px)/2)); color: #7a8593; background: #fff; border-top: 1px solid #e9edf2; font-size: 11px; letter-spacing: .7px; }
+@media (max-width: 600px) { .header-inner { padding: 12px 20px; min-height: 70px; } .brand { font-size: 11px; } .site-main { padding: 20px 16px 0; } .site-footer { flex-direction: column; align-items: flex-start; padding: 20px; } }
+
+.site-header nav { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+
+.nav-user { color: #6b7583; font-size: 11px; max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.site-header nav .nav-login { padding: 10px 13px; border-radius: 8px; color: white; background: #18212f; }
+.site-header nav .nav-login:hover { color: white; background: #31445b; }
+.nav-logout { background: none; border: 1px solid #d4dce6; border-radius: 8px; padding: 9px 12px; font-size: 12px; cursor: pointer; color: #39465a; font-weight: 750; }
+.nav-logout:hover { background: #f1f4f7; }
+@media (max-width: 740px) { .header-inner { align-items: flex-start; flex-direction: column; padding: 14px 20px; gap: 12px; } .site-header nav { gap: 12px; } }

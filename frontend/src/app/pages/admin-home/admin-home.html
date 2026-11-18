@@ -1,0 +1,32 @@
+<section class="admin-page">
+  <div class="admin-heading">
+    <span class="eyebrow">LE GRAND CINÉMA · ADMINISTRATION</span>
+    <h1>Espace administrateur</h1>
+    <p>Bienvenue, {{ auth.user()?.email }}. Cet espace est réservé aux gestionnaires du cinéma.</p>
+  </div>
+
+  @if (loading()) {
+    <p class="info-state" role="status">Vérification des droits et chargement des indicateurs...</p>
+  } @else if (error()) {
+    <div class="error-state" role="alert">{{ error() }}</div>
+  } @else if (overview(); as data) {
+    <p class="success-state">Accès administrateur confirmé par l'API sécurisée.</p>
+    <div class="stat-grid" aria-label="Aperçu des réservations sur 14 jours">
+      <article class="stat-card"><span>Séances</span><strong>{{ data.totalSeances }}</strong></article>
+      <article class="stat-card"><span>Places réservées</span><strong>{{ data.reservedSeats }}</strong></article>
+      <article class="stat-card"><span>Places disponibles</span><strong>{{ data.availableSeats }}</strong></article>
+      <article class="stat-card"><span>Taux de remplissage</span><strong>{{ data.occupancyRate }} %</strong></article>
+    </div>
+    <p class="note">Indicateurs sur les séances des 14 prochains jours (réservations, pas entrées réelles).</p>
+  }
+
+  <div class="admin-next">
+    <h2>Gestion du cinéma</h2>
+    <p>Accédez aux outils de suivi et de pilotage du cinéma.</p>
+    <div class="admin-links">
+      <a routerLink="/admin/programmation">Gérer la programmation</a>
+      <a routerLink="/admin/reservations">Suivi des réservations</a>
+      <a routerLink="/admin/statistiques">Statistiques &amp; affluence</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,96 @@
+<section class="stats-page">
+  <p class="breadcrumb"><a routerLink="/admin">Administration</a> / Statistiques & affluence</p>
+  <header class="stats-heading">
+    <span class="eyebrow">US10 & US11 · ANALYSE</span>
+    <h1>Statistiques et affluence</h1>
+    <p>Taux de remplissage des séances et indicateurs de vigilance.</p>
+  </header>
+
+  <form class="filters" (ngSubmit)="load()">
+    <label for="days">Période affluence
+      <select id="days" name="days" [(ngModel)]="days">
+        <option [ngValue]="7">7 jours</option><option [ngValue]="14">14 jours</option><option [ngValue]="30">30 jours</option>
+      </select>
+    </label>
+    <label for="festival-start">Festival : début (facultatif)
+      <input id="festival-start" type="date" name="festivalStart" [(ngModel)]="festivalStart" />
+    </label>
+    <label for="festival-end">Festival : fin (facultatif)
+      <input id="festival-end" type="date" name="festivalEnd" [(ngModel)]="festivalEnd" />
+    </label>
+    <button type="submit" [disabled]="loading()">{{ loading() ? 'Chargement...' : 'Actualiser' }}</button>
+  </form>
+  <p class="subnote">Les dates de festival servent uniquement au scénario d'analyse que vous saisissez ; aucun calendrier officiel n'est préchargé.</p>
+
+  @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+  @if (loading()) {
+    <p class="empty" role="status">Chargement des indicateurs...</p>
+  } @else {
+    @if (occupancy(); as summary) {
+      <h2>Taux de remplissage · 14 prochains jours</h2>
+      <div class="kpis">
+        <article><span>Séances</span><strong>{{ summary.totalSeances }}</strong></article>
+        <article><span>Places réservées</span><strong>{{ summary.reservedSeats }}</strong></article>
+        <article><span>Places disponibles</span><strong>{{ summary.availableSeats }}</strong></article>
+        <article><span>Remplissage global</span><strong>{{ summary.occupancyRate | number:'1.0-2' }} %</strong></article>
+      </div>
+      <h3>12 séances les plus remplies</h3>
+      @if (hottestSeances().length === 0) {
+        <p class="empty">Aucune séance pour la période.</p>
+      } @else {
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Film / salle</th><th>Séance</th><th>Réservées</th><th>Remplissage</th></tr></thead>
+            <tbody>
+              @for (s of hottestSeances(); track s.seanceId) {
+                <tr>
+                  <td><strong>{{ s.filmTitle }}</strong><small>{{ s.roomName }}</small></td>
+                  <td>{{ s.startsAtUtc | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td>{{ s.reservedSeats }} / {{ s.totalSeats }}</td>
+                  <td class="rate-cell"><div class="rate-track"><span [style.width.%]="s.occupancyRate"></span></div><span>{{ s.occupancyRate | number:'1.0-2' }} %</span></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+      <p class="subnote">Taux = places réservées / places totales. Il ne mesure pas la fréquentation réelle.</p>
+    }
+
+    @if (affluence(); as report) {
+      <h2>Affluence · {{ report.startDate }} au {{ report.endDate }}</h2>
+      <div class="kpis">
+        <article><span>Places réservées</span><strong>{{ report.totalReservedSeats }}</strong></article>
+        <article><span>Taux de réservation</span><strong>{{ report.globalOccupancyRate | number:'1.0-2' }} %</strong></article>
+      </div>
+      <h3>Tendance quotidienne</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Date</th><th>Séances</th><th>Réservées</th><th>Remplissage</th><th>Alerte</th></tr></thead>
+          <tbody>
+            @for (d of report.dailyTrends; track d.date) {
+              <tr>
+                <td><strong>{{ d.date }}</strong><small>{{ d.isWeekend ? 'Week-end' : 'Semaine' }}{{ d.isFestival ? ' · Festival (saisi)' : '' }}</small></td>
+                <td>{{ d.totalSeances }}</td>
+                <td>{{ d.reservedSeats }} / {{ d.totalSeats }}</td>
+                <td>{{ d.occupancyRate | number:'1.0-2' }} %</td>
+                <td><span class="alert-level" [class.alert-warning]="d.alertLevel !== 'Normale' && d.alertLevel !== 'Aucune séance'">{{ d.alertLevel }}</span></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <h3>Réservations par créneau horaire (UTC)</h3>
+      @if (report.hourlyTrends.length === 0) {
+        <p class="empty">Aucune séance sur la période.</p>
+      } @else {
+        <div class="hours-grid">
+          @for (h of report.hourlyTrends; track h.hourUtc) {
+            <article><strong>{{ h.hourUtc }}:00 UTC</strong><span>{{ h.reservedSeats }} places réservées</span><small>{{ h.occupancyRate | number:'1.0-2' }} % de remplissage</small></article>
+          }
+        </div>
+      }
+      <p class="subnote">MVP : alertes heuristiques basées sur les réservations et les dates. Ce n'est pas une prédiction statistique.</p>
+    }
+  }
+</section>

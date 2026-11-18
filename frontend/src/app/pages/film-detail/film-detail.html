@@ -1,0 +1,30 @@
+<section class="detail-page">
+  <a class="back-link" routerLink="/films">&larr; Retour aux films</a>
+
+  @if (loading()) {
+    <p role="status">Chargement du film...</p>
+  } @else if (error()) {
+    <p class="error" role="alert">{{ error() }}</p>
+  } @else if (film(); as selected) {
+    <div class="detail-card">
+      <div class="detail-poster">
+        @if (selected.posterUrl) {
+          <img [src]="selected.posterUrl" [alt]="'Affiche de ' + selected.title" />
+        } @else {
+          <span aria-hidden="true">{{ selected.title.charAt(0) }}</span>
+        }
+      </div>
+      <div class="detail-copy">
+        <span class="eyebrow">LE GRAND CIN&Eacute;MA</span>
+        <h1>{{ selected.title }}</h1>
+        <p class="duration">Dur&eacute;e : {{ selected.durationMinutes }} minutes</p>
+        <p class="description">{{ selected.description }}</p>
+        <div class="next-step">
+          <a class="book-link" [routerLink]="['/seances']" [queryParams]="{ filmId: selected.id }">
+            Voir les séances de ce film &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+  }
+</section>
